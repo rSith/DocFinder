@@ -1,4 +1,4 @@
-# DocFinder: Online Disease Identification and Doctor Recommendation System
+# DocFinder: Disease Identification and Doctor Recommendation System
 
 <div align="center">
 
