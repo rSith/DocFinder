@@ -3,26 +3,20 @@ package com.docfinder.dao;
 import com.docfinder.model.User;
 import java.sql.*;
 
-public class UserDAO {
+public class UserDAO extends BaseDAO { // <--- INHERITANCE
 
-    // 1. Register a new User (Direct String Concatenation)
     public boolean registerUser(User user) {
-
-        // Logic to split the name
         String[] names = user.getName().split(" ", 2);
         String firstName = names[0];
         String lastName = names.length > 1 ? names[1] : ".";
 
         String sql = "INSERT INTO User (username, password_hash, first_name, last_name, age, gender, contact_number) " +
-                "VALUES ('" + user.getUsername() + "', " +
-                "'" + user.getPasswordHash() + "', " +
-                "'" + firstName + "', " +
-                "'" + lastName + "', " +
-                user.getAge() + ", " +
-                "'" + user.getGender() + "', " +
-                "'" + user.getContactNumber() + "')";
+                "VALUES ('" + user.getUsername() + "', '" + user.getPasswordHash() + "', '" +
+                firstName + "', '" + lastName + "', " + user.getAge() + ", '" +
+                user.getGender() + "', '" + user.getContactNumber() + "')";
 
-        try (Connection conn = DatabaseConnection.getConnection();
+        // Use the inherited getConnection() method
+        try (Connection conn = getConnection();
              Statement stmt = conn.createStatement()) {
 
             int rowsInserted = stmt.executeUpdate(sql);
@@ -34,19 +28,15 @@ public class UserDAO {
         }
     }
 
-    // 2. Login Check (Direct String Concatenation)
     public User getUserByUsername(String username) {
-
         String sql = "SELECT * FROM User WHERE username = '" + username + "'";
 
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = getConnection(); // <--- INHERITED METHOD
              Statement stmt = conn.createStatement()) {
 
             ResultSet rs = stmt.executeQuery(sql);
-
             if (rs.next()) {
                 String fullName = rs.getString("first_name") + " " + rs.getString("last_name");
-
                 return new User(
                         fullName,
                         rs.getInt("age"),

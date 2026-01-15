@@ -9,6 +9,8 @@ import com.docfinder.service.SymptomChecker;
 import com.docfinder.exception.InvalidSymptomException;
 import com.docfinder.exception.DiseaseNotFoundException;
 import com.docfinder.dao.DiseaseDAO;
+import com.docfinder.util.InputValidator;
+import com.docfinder.util.PasswordHasher;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -63,16 +65,18 @@ public class DiseaseIdentificationApp {
         String username = scanner.nextLine();
 
         System.out.print("Enter Password: ");
-        String password = scanner.nextLine();
+        String rawPassword = scanner.nextLine();
 
-        // Use the DAO logic we built in Phase 1
+        // Hash the input to match the database
+        String hashedPassword = PasswordHasher.hashPassword(rawPassword);
+
         User user = userDAO.getUserByUsername(username);
 
-        // Simple password check (In a real app, use hashing!)
-        if (user != null && user.getPasswordHash().equals(password)) {
+        // Compare HASH vs HASH
+        if (user != null && user.getPasswordHash().equals(hashedPassword)) {
             currentUser = user;
             System.out.println("✅ Login Successful! Welcome, " + user.getName());
-            showUserDashboard(); // Go to the inner menu
+            showUserDashboard();
         } else {
             System.out.println("❌ Invalid username or password.");
         }
@@ -83,22 +87,41 @@ public class DiseaseIdentificationApp {
         System.out.print("Enter Full Name: ");
         String name = scanner.nextLine();
 
-        System.out.print("Enter Age: ");
-        int age = Integer.parseInt(scanner.nextLine());
+        // VALIDATION LOOP FOR AGE
+        int age = 0;
+        while (true) {
+            System.out.print("Enter Age: ");
+            try {
+                age = Integer.parseInt(scanner.nextLine());
+                if (InputValidator.isValidAge(age)) break;
+                System.out.println("⚠️ Age must be between 1 and 120.");
+            } catch (NumberFormatException e) {
+                System.out.println("⚠️ Please enter a valid number.");
+            }
+        }
 
         System.out.print("Enter Gender: ");
         String gender = scanner.nextLine();
 
-        System.out.print("Enter Contact Number: ");
-        String contact = scanner.nextLine();
+        // VALIDATION LOOP FOR CONTACT
+        String contact = "";
+        while (true) {
+            System.out.print("Enter Contact Number (10 digits): ");
+            contact = scanner.nextLine();
+            if (InputValidator.isValidPhoneNumber(contact)) break;
+            System.out.println("⚠️ Invalid number. Must be 10 digits (e.g., 0711234567).");
+        }
 
         System.out.print("Choose a Username: ");
         String username = scanner.nextLine();
 
+        // PASSWORD HASHING
         System.out.print("Choose a Password: ");
-        String password = scanner.nextLine();
+        String rawPassword = scanner.nextLine();
+        String hashedPassword = PasswordHasher.hashPassword(rawPassword); // <--- HASHING HAPPENS HERE
 
-        User newUser = new User(name, age, gender, contact, username, password);
+        // Save the HASHED password, not the raw one
+        User newUser = new User(name, age, gender, contact, username, hashedPassword);
 
         if (userDAO.registerUser(newUser)) {
             System.out.println("✅ Registration Successful! Please login.");
