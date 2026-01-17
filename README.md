@@ -10,7 +10,6 @@
 
 **A comprehensive Java application demonstrating Object-Oriented Programming (OOP) and Database Management Systems (DBMS) concepts**
 
-[Features](#-features) • [Installation](#-installation) • [Usage](#-usage) • [Architecture](#-architecture) • [Documentation](#-documentation)
 
 </div>
 
