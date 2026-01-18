@@ -1,6 +1,7 @@
 package com.docfinder.model;
 
 public abstract class Person {
+
     // Encapsulation: private attributes
     private String personID;
     private String name;
