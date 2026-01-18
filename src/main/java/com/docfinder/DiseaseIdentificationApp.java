@@ -22,7 +22,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import javafx.util.Duration;             // Essential for the timer
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,6 @@ public class DiseaseIdentificationApp extends Application {
     private DoctorDAO doctorDAO = new DoctorDAO();
     private DiseaseDAO diseaseDAO = new DiseaseDAO();
     private SymptomChecker symptomChecker = new SymptomChecker();
-
     private Stage window;
     private Scene mainScene;
 
@@ -77,28 +76,22 @@ public class DiseaseIdentificationApp extends Application {
     }
 
     // ==========================================
-    // SCREEN 1: LOGIN
-    // ==========================================
-    // ==========================================
     // SCREEN 1: LOGIN (Fixed Layout)
     // ==========================================
     private void showLoginScreen() {
         VBox leftPane = createLeftBrandingPane();
-
         VBox rightPane = new VBox();
         rightPane.getStyleClass().add("right-form-pane");
         rightPane.setAlignment(Pos.CENTER);
 
         // --- FIX: LOCK THE WIDTH OF THE RIGHT SIDE ---
-        // This ensures the split doesn't "jump" when switching screens
         rightPane.setMinWidth(550);
         rightPane.setPrefWidth(550);
         rightPane.setMaxWidth(550);
-        // ---------------------------------------------
 
         VBox loginCard = new VBox(20);
         loginCard.getStyleClass().add("login-card-container");
-        loginCard.setMaxWidth(400); // Inner card width
+        loginCard.setMaxWidth(400);
 
         Label loginHeader = new Label("Welcome Back");
         loginHeader.getStyleClass().add("login-header-text");
@@ -128,7 +121,6 @@ public class DiseaseIdentificationApp extends Application {
         Button loginBtn = new Button("LOGIN");
         loginBtn.setMaxWidth(Double.MAX_VALUE);
         loginBtn.getStyleClass().add("button-primary-blue");
-
         Button regBtn = new Button("New user? Create an account");
         regBtn.getStyleClass().add("button-link-blue");
 
@@ -144,7 +136,6 @@ public class DiseaseIdentificationApp extends Application {
                 msgLabel.setText("Invalid Username or Password");
             }
         });
-
         regBtn.setOnAction(e -> showRegistrationScreen());
 
         loginCard.getChildren().addAll(loginHeader, msgLabel, userContainer, passContainer, loginBtn, regBtn);
@@ -155,14 +146,10 @@ public class DiseaseIdentificationApp extends Application {
     }
 
     // ==========================================
-    // SCREEN 2: REGISTRATION
-    // ==========================================
-    // ==========================================
     // SCREEN 2: REGISTRATION (Fixed Layout)
     // ==========================================
     private void showRegistrationScreen() {
         VBox brandingPane = createLeftBrandingPane();
-
         VBox formPane = new VBox();
         formPane.getStyleClass().add("right-form-pane");
         formPane.setAlignment(Pos.CENTER);
@@ -171,11 +158,10 @@ public class DiseaseIdentificationApp extends Application {
         formPane.setMinWidth(550);
         formPane.setPrefWidth(550);
         formPane.setMaxWidth(550);
-        // ------------------------------------------
 
         VBox regCard = new VBox(15);
         regCard.getStyleClass().add("login-card-container");
-        regCard.setMaxWidth(450); // Kept slightly wider for better form fit
+        regCard.setMaxWidth(450);
 
         Label title = new Label("Create Account");
         title.getStyleClass().add("login-header-text");
@@ -186,7 +172,8 @@ public class DiseaseIdentificationApp extends Application {
         TextField nameField = new TextField(); nameField.setPromptText("Full Name");
         nameField.getStyleClass().add("modern-input-field");
 
-        TextField ageField = new TextField(); ageField.setPromptText("Age");
+        TextField ageField = new TextField();
+        ageField.setPromptText("Age");
         ageField.getStyleClass().add("modern-input-field");
 
         ComboBox<String> genderBox = new ComboBox<>();
@@ -197,20 +184,17 @@ public class DiseaseIdentificationApp extends Application {
 
         TextField contactField = new TextField(); contactField.setPromptText("Mobile Number");
         contactField.getStyleClass().add("modern-input-field");
-
         TextField userField = new TextField(); userField.setPromptText("Choose Username");
         userField.getStyleClass().add("modern-input-field");
 
         PasswordField passField = new PasswordField(); passField.setPromptText("Choose Password");
         passField.getStyleClass().add("modern-input-field");
-
         Button submitBtn = new Button("REGISTER NOW");
         submitBtn.setMaxWidth(Double.MAX_VALUE);
         submitBtn.getStyleClass().add("button-primary-blue");
 
         Button backBtn = new Button("Back to Login");
         backBtn.getStyleClass().add("button-link-blue");
-
         submitBtn.setOnAction(e -> {
             try {
                 int age = Integer.parseInt(ageField.getText());
@@ -226,7 +210,6 @@ public class DiseaseIdentificationApp extends Application {
                 msgLabel.setText("Please check your inputs!");
             }
         });
-
         backBtn.setOnAction(e -> showLoginScreen());
 
         regCard.getChildren().addAll(title, msgLabel, nameField, ageField, genderBox, contactField, userField, passField, submitBtn, backBtn);
@@ -236,15 +219,6 @@ public class DiseaseIdentificationApp extends Application {
         switchScene(splitRoot);
     }
 
-    // ==========================================
-    // SCREEN 3: DASHBOARD
-    // ==========================================
-    // ==========================================
-    // SCREEN 3: DASHBOARD (Updated with Health Tip)
-    // ==========================================
-    // ==========================================
-    // SCREEN 3: DASHBOARD (Professional & Dynamic)
-    // ==========================================
     // ==========================================
     // SCREEN 3: DASHBOARD (Final Version)
     // ==========================================
@@ -285,20 +259,16 @@ public class DiseaseIdentificationApp extends Application {
         initialsLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #0052D4; -fx-font-size: 14px;");
 
         StackPane avatarPane = new StackPane(avatarCircle, initialsLabel);
-
         Label userLabel = new Label(user.getName());
         userLabel.getStyleClass().add("navbar-user");
         userLabel.setPadding(new Insets(0, 15, 0, 10));
 
         Button btnLogout = new Button("Logout");
         btnLogout.getStyleClass().add("button-logout-small");
-
-        // --- STEP 4 UPDATE: LOGOUT TOAST ---
         btnLogout.setOnAction(e -> {
             showLoginScreen();
             showToast("You have been logged out securely.");
         });
-
         navbar.getChildren().addAll(brand, spacer, avatarPane, userLabel, btnLogout);
 
         // 2. Hero Section
@@ -314,7 +284,6 @@ public class DiseaseIdentificationApp extends Application {
 
         Label welcomeTitle = new Label(greeting + ", " + user.getName());
         welcomeTitle.getStyleClass().add("hero-title");
-
         String date = java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.ofPattern("EEEE, MMMM d"));
         Label welcomeSub = new Label("It's " + date + ". Let's check your health status.");
         welcomeSub.getStyleClass().add("hero-subtitle");
@@ -354,7 +323,6 @@ public class DiseaseIdentificationApp extends Application {
         HBox cardsContainer = new HBox(30);
         cardsContainer.setAlignment(Pos.CENTER);
         cardsContainer.setPadding(new Insets(20));
-
         VBox cardSymptoms = createActionCard("🤒", "Identify My Disease", "Enter your symptoms to get an instant preliminary diagnosis and first-aid advice.");
         cardSymptoms.setOnMouseClicked(e -> showSymptomCheckerScreen(user));
 
@@ -373,12 +341,10 @@ public class DiseaseIdentificationApp extends Application {
 
         Label credits = new Label("Precision Diagnostics & Expert Care Directory");
         credits.setStyle("-fx-text-fill: #bdc3c7; -fx-font-size: 11px;");
-
         footer.getChildren().addAll(copyright, credits);
 
         // 5. Assemble Main Layout
         mainLayout.getChildren().addAll(navbar, heroSection, tipBox, cardsContainer, footer);
-
         ScrollPane scroll = new ScrollPane(mainLayout);
         scroll.setFitToWidth(true);
         scroll.setFitToHeight(true);
@@ -386,11 +352,9 @@ public class DiseaseIdentificationApp extends Application {
 
         switchScene(scroll);
     }
+
     // ==========================================
-    // SCREEN 4: SYMPTOM CHECKER (FIXED LOADING)
-    // ==========================================
-    // ==========================================
-    // SCREEN 4: SYMPTOM CHECKER (With Alignment Fix)
+    // SCREEN 4: SYMPTOM CHECKER (With Confidence Logic)
     // ==========================================
     private void showSymptomCheckerScreen(User user) {
         VBox mainLayout = new VBox(25);
@@ -413,7 +377,6 @@ public class DiseaseIdentificationApp extends Application {
 
         Accordion accordion = new Accordion();
         accordion.getStyleClass().add("modern-accordion");
-
         TitledPane p1 = createCategoryPane("General & Respiratory");
         TitledPane p2 = createCategoryPane("Skin & External");
         TitledPane p3 = createCategoryPane("Other");
@@ -424,13 +387,8 @@ public class DiseaseIdentificationApp extends Application {
         for(String s : symptoms) {
             CheckBox cb = new CheckBox(s);
             cb.getStyleClass().add("symptom-checkbox");
-
-            // --- THIS IS THE FIX FOR ALIGNMENT ---
-            // Forces every checkbox to be 220px wide.
-            // This makes them line up in perfect vertical columns.
+            // Fix alignment
             cb.setPrefWidth(220);
-            // -------------------------------------
-
             allChecks.add(cb);
             if(s.contains("Fever") || s.contains("Cough") || s.contains("Pain")) addToPane(p1, cb);
             else if(s.contains("Rash") || s.contains("Itch")) addToPane(p2, cb);
@@ -441,7 +399,6 @@ public class DiseaseIdentificationApp extends Application {
 
         HBox buttonBox = new HBox(20);
         buttonBox.setAlignment(Pos.CENTER);
-
         Button backBtn = new Button("Back to Dashboard");
         backBtn.getStyleClass().add("button-link-blue");
         backBtn.setOnAction(e -> showDashboardScreen(user));
@@ -454,7 +411,7 @@ public class DiseaseIdentificationApp extends Application {
         contentCard.getChildren().addAll(accordion, buttonBox);
         mainLayout.getChildren().addAll(headerBox, contentCard);
 
-        // --- LOADING EFFECT LOGIC (Your existing logic) ---
+        // --- LOADING EFFECT LOGIC ---
         analyzeBtn.setOnAction(e -> {
             List<String> selected = new ArrayList<>();
             for(CheckBox c : allChecks) if(c.isSelected()) selected.add(c.getText());
@@ -487,6 +444,11 @@ public class DiseaseIdentificationApp extends Application {
                         // 4. Run Analysis
                         Disease d = symptomChecker.analyzeSymptoms(selected);
 
+                        // --- NEW CODE: CALCULATE CONFIDENCE SCORE ---
+                        double rawScore = d.calculateConfidence(selected);
+                        int percentage = (int) (rawScore * 100);
+                        // --------------------------------------------
+
                         // --- SUCCESS POPUP ---
                         Dialog<ButtonType> dialog = new Dialog<>();
                         dialog.initOwner(window);
@@ -498,7 +460,6 @@ public class DiseaseIdentificationApp extends Application {
                         dialogPane.setMinWidth(600);
                         dialogPane.setMinHeight(600);
                         dialogPane.setPrefSize(600, 700);
-
                         if (getClass().getResource("/style.css") != null) {
                             dialogPane.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
                         }
@@ -506,15 +467,36 @@ public class DiseaseIdentificationApp extends Application {
                         BorderPane mainContainer = new BorderPane();
                         mainContainer.setPadding(new Insets(0, 0, 20, 0));
 
-                        VBox header = new VBox(5);
+                        // --- UPDATED HEADER WITH CONFIDENCE BADGE ---
+                        VBox header = new VBox(8);
                         header.getStyleClass().add("results-header");
                         header.setPadding(new Insets(20));
                         Label lblDiagnosis = new Label(d.getName());
                         lblDiagnosis.getStyleClass().add("results-diagnosis-title");
+
+                        // Horizontal Box for Category + Confidence
+                        HBox badges = new HBox(10);
+                        badges.setAlignment(Pos.CENTER_LEFT);
+
                         Label lblCategory = new Label(d.getCategory() + " Category");
                         lblCategory.getStyleClass().add("results-category-badge");
-                        header.getChildren().addAll(lblDiagnosis, lblCategory);
+
+                        Label lblConfidence = new Label("Match Confidence: " + percentage + "%");
+                        lblConfidence.setStyle("-fx-font-size: 13px; -fx-font-weight: bold; -fx-padding: 5 12; -fx-background-radius: 15; -fx-text-fill: white;");
+
+                        // Color Logic
+                        if (percentage >= 80) {
+                            lblConfidence.setStyle(lblConfidence.getStyle() + "-fx-background-color: #27ae60;"); // Green
+                        } else if (percentage >= 50) {
+                            lblConfidence.setStyle(lblConfidence.getStyle() + "-fx-background-color: #f39c12;"); // Orange
+                        } else {
+                            lblConfidence.setStyle(lblConfidence.getStyle() + "-fx-background-color: #c0392b;"); // Red
+                        }
+
+                        badges.getChildren().addAll(lblCategory, lblConfidence);
+                        header.getChildren().addAll(lblDiagnosis, badges);
                         mainContainer.setTop(header);
+                        // ---------------------------------------------
 
                         VBox body = new VBox(25);
                         body.setPadding(new Insets(20));
@@ -572,7 +554,6 @@ public class DiseaseIdentificationApp extends Application {
                         dialogPane.getButtonTypes().add(ButtonType.OK);
 
                         dialog.showAndWait();
-
                     } catch(Exception ex) {
                         // --- WARNING POPUP ---
                         Dialog<ButtonType> warningDialog = new Dialog<>();
@@ -611,7 +592,6 @@ public class DiseaseIdentificationApp extends Application {
                         okBtn.setOnAction(evt -> warningDialog.close());
 
                         box.getChildren().addAll(headerRow, msg, advice, okBtn);
-
                         warningDialog.getDialogPane().setContent(box);
                         warningDialog.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
                         Node closeButton = warningDialog.getDialogPane().lookupButton(ButtonType.CLOSE);
@@ -628,13 +608,13 @@ public class DiseaseIdentificationApp extends Application {
 
             pause.play();
         });
-
         ScrollPane mainScroll = new ScrollPane(mainLayout);
         mainScroll.setFitToWidth(true);
         mainScroll.setFitToHeight(true);
         mainScroll.getStyleClass().add("transparent-scroll");
         switchScene(mainScroll);
     }
+
     // ==========================================
     // SCREEN 5: DOCTORS DIRECTORY
     // ==========================================
@@ -697,31 +677,15 @@ public class DiseaseIdentificationApp extends Application {
     // ==========================================
     // HELPERS
     // ==========================================
-    // ==========================================
-    // HELPER: LEFT BRANDING PANE (Position Fixed)
-    // ==========================================
     private VBox createLeftBrandingPane() {
         VBox leftPane = new VBox(15);
         leftPane.getStyleClass().add("left-branding-pane");
-
-        // --- POSITIONING SETTINGS ---
-
-        // 1. Move everything to the BOTTOM LEFT so it doesn't cover faces
         leftPane.setAlignment(Pos.BOTTOM_LEFT);
-
-        // 2. Fine-tune the position with Padding
-        // Format: new Insets(TOP, RIGHT, BOTTOM, LEFT)
-        // Change '100' to move it higher or lower from the bottom edge.
-        // Change '60' to move it left or right.
         leftPane.setPadding(new Insets(0, 40, 150, 80));
-
-        // -----------------------------
-
         HBox.setHgrow(leftPane, Priority.ALWAYS);
 
         Label logoIcon = new Label("✚");
         logoIcon.getStyleClass().add("brand-logo-icon");
-
         Label brandTitle = new Label("DocFinder\nHealth System");
         brandTitle.getStyleClass().add("brand-title-split");
         brandTitle.setWrapText(true);
@@ -729,12 +693,12 @@ public class DiseaseIdentificationApp extends Application {
         Label brandDesc = new Label("Precision diagnostics and expert care,\npowered by advanced identification technology.");
         brandDesc.getStyleClass().add("brand-desc-split");
         brandDesc.setWrapText(true);
-        // Limit width so it doesn't stretch too far
         brandDesc.setMaxWidth(400);
 
         leftPane.getChildren().addAll(logoIcon, brandTitle, brandDesc);
         return leftPane;
     }
+
     private VBox createActionCard(String iconEmoji, String titleText, String descText) {
         VBox card = new VBox(15);
         card.getStyleClass().add("action-card");
@@ -754,9 +718,6 @@ public class DiseaseIdentificationApp extends Application {
         return card;
     }
 
-    // ==========================================
-    // UPDATE THIS HELPER METHOD
-    // ==========================================
     private void renderDoctorCards(FlowPane grid, List<Doctor> doctors) {
         grid.getChildren().clear();
         if(doctors.isEmpty()) {
@@ -764,18 +725,13 @@ public class DiseaseIdentificationApp extends Application {
             noData.setStyle("-fx-font-size: 16px; -fx-text-fill: #888;");
             grid.getChildren().add(noData);
         } else {
-            // "Staggered" Animation Logic
             int delay = 0;
             for (Doctor d : doctors) {
                 VBox card = createDoctorProfileCard(d);
-
-                // Initially hide the card
                 card.setOpacity(0);
-                card.setTranslateY(20); // Move it down slightly
-
+                card.setTranslateY(20);
                 grid.getChildren().add(card);
 
-                // Create a fade-in + slide-up animation
                 javafx.animation.FadeTransition ft = new javafx.animation.FadeTransition(javafx.util.Duration.millis(400), card);
                 ft.setToValue(1.0);
 
@@ -783,59 +739,45 @@ public class DiseaseIdentificationApp extends Application {
                 tt.setToY(0);
 
                 javafx.animation.ParallelTransition pt = new javafx.animation.ParallelTransition(ft, tt);
-                pt.setDelay(javafx.util.Duration.millis(delay)); // Wait a bit before starting
+                pt.setDelay(javafx.util.Duration.millis(delay));
                 pt.play();
-
-                delay += 100; // Increase delay for the next card (100ms)
+                delay += 100;
             }
         }
     }
 
-    // ==========================================
-    // HELPER: DOCTOR CARD (Updated - No Book Button)
-    // ==========================================
     private VBox createDoctorProfileCard(Doctor d) {
         VBox card = new VBox(10);
         card.getStyleClass().add("doctor-profile-card");
         card.setPrefWidth(280);
         card.setAlignment(Pos.TOP_CENTER);
 
-        // 1. Avatar (Doctor Icon)
         Label avatar = new Label("👨‍⚕️");
         avatar.setStyle("-fx-font-size: 50px; -fx-background-color: #e3f2fd; -fx-background-radius: 50; -fx-padding: 10px;");
 
-        // 2. Name & Specialty
         Label name = new Label(d.getName());
         name.getStyleClass().add("doc-name");
 
         Label spec = new Label(d.getSpecialization());
         spec.getStyleClass().add("doc-badge");
 
-        // 3. Separator line
         Separator sep = new Separator();
         sep.setMaxWidth(200);
 
-        // 4. Contact Details
-        VBox details = new VBox(10); // Increased spacing slightly for better readability
+        VBox details = new VBox(10);
         details.setAlignment(Pos.CENTER_LEFT);
-        // Added more bottom padding (25) to make the card look finished without the button
         details.setPadding(new Insets(10, 15, 25, 15));
-
         Label phone = new Label("📞  " + d.getContactNumber());
         Label address = new Label("📍  " + d.getClinicAddress());
         Label hours = new Label("⏰  " + d.getClinicHours());
 
-        // Apply consistent grey styling to details
         String detailStyle = "-fx-text-fill: #555; -fx-font-size: 13px;";
         phone.setStyle(detailStyle);
         address.setStyle(detailStyle);
         hours.setStyle(detailStyle);
 
         details.getChildren().addAll(phone, address, hours);
-
-        // 5. Add everything to card (Button removed)
         card.getChildren().addAll(avatar, name, spec, sep, details);
-
         return card;
     }
 
@@ -851,15 +793,10 @@ public class DiseaseIdentificationApp extends Application {
     private void addToPane(TitledPane tp, CheckBox cb) {
         ((TilePane)tp.getContent()).getChildren().add(cb);
     }
-    // ==========================================
-    // HELPER: TOAST NOTIFICATION
-    // ==========================================
-    // ==========================================
-    // HELPER: TOAST NOTIFICATION
-    // ==========================================
+
     private void showToast(String message) {
         Label toast = new Label(message);
-        toast.getStyleClass().add("toast-bar"); // Ensure this class is in style.css
+        toast.getStyleClass().add("toast-bar");
 
         StackPane root = (StackPane) window.getScene().getRoot();
         root.getChildren().add(toast);
@@ -869,7 +806,6 @@ public class DiseaseIdentificationApp extends Application {
         javafx.animation.FadeTransition fadeIn = new javafx.animation.FadeTransition(javafx.util.Duration.millis(500), toast);
         fadeIn.setFromValue(0);
         fadeIn.setToValue(1);
-
         javafx.animation.PauseTransition stay = new javafx.animation.PauseTransition(javafx.util.Duration.seconds(3));
 
         javafx.animation.FadeTransition fadeOut = new javafx.animation.FadeTransition(javafx.util.Duration.millis(500), toast);
@@ -877,7 +813,6 @@ public class DiseaseIdentificationApp extends Application {
         fadeOut.setToValue(0);
 
         fadeOut.setOnFinished(e -> root.getChildren().remove(toast));
-
         javafx.animation.SequentialTransition sq = new javafx.animation.SequentialTransition(fadeIn, stay, fadeOut);
         sq.play();
     }
