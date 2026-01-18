@@ -3,6 +3,7 @@ package com.docfinder.model;
 import java.util.ArrayList;
 import java.util.List;
 
+// Abstract: You cannot say "new Disease()"
 public abstract class Disease {
     private int diseaseID;
     private String name;
