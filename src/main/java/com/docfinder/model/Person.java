@@ -3,11 +3,10 @@ package com.docfinder.model;
 public abstract class Person {
 
     // Encapsulation: private attributes
-    private String personID;
-    private String name;
-    private int age;
-    private String gender;
-    private String contactNumber;
+    private String name;           // Hidden data
+    private int age;               // Hidden data
+    private String gender;         // Hidden data
+    private String contactNumber;  // Hidden data
 
     // Constructor
     public Person(String name, int age, String gender, String contactNumber) {
