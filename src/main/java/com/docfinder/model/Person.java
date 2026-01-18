@@ -32,7 +32,7 @@ public abstract class Person {
         return age;
     }
     public void setAge(int age) {
-        this.age = age;
+        if (age > 0 && age < 120) this.age = age; // Validation!
     }
 
     public String getGender() {
