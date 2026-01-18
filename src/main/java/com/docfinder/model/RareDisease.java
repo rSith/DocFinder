@@ -7,8 +7,8 @@ public class RareDisease extends Disease {
     @Override
     public double calculateConfidence(List<String> userSymptoms) {
         int matchCount = 0;
+        // ... counting logic ...
 
-        // Count matches
         for (int i = 0; i < userSymptoms.size(); i++) {
             String s = userSymptoms.get(i);
             if (getSymptoms().contains(s)) {
