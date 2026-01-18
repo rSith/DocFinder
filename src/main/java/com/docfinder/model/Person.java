@@ -20,7 +20,7 @@ public abstract class Person {
     public Person() {
     }
 
-    // Getters and Setters
+    // Public methods to access data safely using Getters and Setters
     public String getName() {
         return name;
     }
