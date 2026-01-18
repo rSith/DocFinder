@@ -79,17 +79,26 @@ public class DiseaseIdentificationApp extends Application {
     // ==========================================
     // SCREEN 1: LOGIN
     // ==========================================
+    // ==========================================
+    // SCREEN 1: LOGIN (Fixed Layout)
+    // ==========================================
     private void showLoginScreen() {
         VBox leftPane = createLeftBrandingPane();
 
         VBox rightPane = new VBox();
         rightPane.getStyleClass().add("right-form-pane");
         rightPane.setAlignment(Pos.CENTER);
-        HBox.setHgrow(rightPane, Priority.ALWAYS);
+
+        // --- FIX: LOCK THE WIDTH OF THE RIGHT SIDE ---
+        // This ensures the split doesn't "jump" when switching screens
+        rightPane.setMinWidth(550);
+        rightPane.setPrefWidth(550);
+        rightPane.setMaxWidth(550);
+        // ---------------------------------------------
 
         VBox loginCard = new VBox(20);
         loginCard.getStyleClass().add("login-card-container");
-        loginCard.setMaxWidth(400);
+        loginCard.setMaxWidth(400); // Inner card width
 
         Label loginHeader = new Label("Welcome Back");
         loginHeader.getStyleClass().add("login-header-text");
@@ -126,17 +135,13 @@ public class DiseaseIdentificationApp extends Application {
         Label msgLabel = new Label();
         msgLabel.getStyleClass().add("message-label");
 
-        // Inside showLoginScreen()
         loginBtn.setOnAction(e -> {
             User user = userDAO.getUserByUsername(userField.getText());
             if (user != null && PasswordHasher.verify(passField.getText(), user.getPasswordHash())) {
                 showDashboardScreen(user);
-                // --- NEW: TOAST CALL ---
                 showToast("Login Successful! Welcome, " + user.getName());
             } else {
-                // Keep the red error message for failures, or use a toast here too
                 msgLabel.setText("Invalid Username or Password");
-                // Optional: showToast("Invalid Credentials");
             }
         });
 
@@ -152,17 +157,25 @@ public class DiseaseIdentificationApp extends Application {
     // ==========================================
     // SCREEN 2: REGISTRATION
     // ==========================================
+    // ==========================================
+    // SCREEN 2: REGISTRATION (Fixed Layout)
+    // ==========================================
     private void showRegistrationScreen() {
         VBox brandingPane = createLeftBrandingPane();
 
         VBox formPane = new VBox();
         formPane.getStyleClass().add("right-form-pane");
         formPane.setAlignment(Pos.CENTER);
-        HBox.setHgrow(formPane, Priority.ALWAYS);
+
+        // --- FIX: LOCK THE WIDTH TO MATCH LOGIN ---
+        formPane.setMinWidth(550);
+        formPane.setPrefWidth(550);
+        formPane.setMaxWidth(550);
+        // ------------------------------------------
 
         VBox regCard = new VBox(15);
         regCard.getStyleClass().add("login-card-container");
-        regCard.setMaxWidth(450);
+        regCard.setMaxWidth(450); // Kept slightly wider for better form fit
 
         Label title = new Label("Create Account");
         title.getStyleClass().add("login-header-text");
@@ -198,16 +211,13 @@ public class DiseaseIdentificationApp extends Application {
         Button backBtn = new Button("Back to Login");
         backBtn.getStyleClass().add("button-link-blue");
 
-        // Inside showRegistrationScreen()
         submitBtn.setOnAction(e -> {
             try {
                 int age = Integer.parseInt(ageField.getText());
                 String hash = PasswordHasher.hash(passField.getText());
                 User u = new User(nameField.getText(), age, genderBox.getValue(), contactField.getText(), userField.getText(), hash);
-
                 if(userDAO.registerUser(u)) {
                     showLoginScreen();
-                    // --- NEW: TOAST CALL ---
                     showToast("Account created successfully! Please login.");
                 } else {
                     msgLabel.setText("Username taken!");
@@ -379,6 +389,9 @@ public class DiseaseIdentificationApp extends Application {
     // ==========================================
     // SCREEN 4: SYMPTOM CHECKER (FIXED LOADING)
     // ==========================================
+    // ==========================================
+    // SCREEN 4: SYMPTOM CHECKER (With Alignment Fix)
+    // ==========================================
     private void showSymptomCheckerScreen(User user) {
         VBox mainLayout = new VBox(25);
         mainLayout.getStyleClass().add("page-background");
@@ -411,6 +424,13 @@ public class DiseaseIdentificationApp extends Application {
         for(String s : symptoms) {
             CheckBox cb = new CheckBox(s);
             cb.getStyleClass().add("symptom-checkbox");
+
+            // --- THIS IS THE FIX FOR ALIGNMENT ---
+            // Forces every checkbox to be 220px wide.
+            // This makes them line up in perfect vertical columns.
+            cb.setPrefWidth(220);
+            // -------------------------------------
+
             allChecks.add(cb);
             if(s.contains("Fever") || s.contains("Cough") || s.contains("Pain")) addToPane(p1, cb);
             else if(s.contains("Rash") || s.contains("Itch")) addToPane(p2, cb);
@@ -434,7 +454,7 @@ public class DiseaseIdentificationApp extends Application {
         contentCard.getChildren().addAll(accordion, buttonBox);
         mainLayout.getChildren().addAll(headerBox, contentCard);
 
-        // --- LOADING EFFECT LOGIC ---
+        // --- LOADING EFFECT LOGIC (Your existing logic) ---
         analyzeBtn.setOnAction(e -> {
             List<String> selected = new ArrayList<>();
             for(CheckBox c : allChecks) if(c.isSelected()) selected.add(c.getText());
@@ -611,10 +631,10 @@ public class DiseaseIdentificationApp extends Application {
 
         ScrollPane mainScroll = new ScrollPane(mainLayout);
         mainScroll.setFitToWidth(true);
+        mainScroll.setFitToHeight(true);
         mainScroll.getStyleClass().add("transparent-scroll");
         switchScene(mainScroll);
     }
-
     // ==========================================
     // SCREEN 5: DOCTORS DIRECTORY
     // ==========================================
@@ -771,31 +791,51 @@ public class DiseaseIdentificationApp extends Application {
         }
     }
 
+    // ==========================================
+    // HELPER: DOCTOR CARD (Updated - No Book Button)
+    // ==========================================
     private VBox createDoctorProfileCard(Doctor d) {
         VBox card = new VBox(10);
         card.getStyleClass().add("doctor-profile-card");
         card.setPrefWidth(280);
         card.setAlignment(Pos.TOP_CENTER);
+
+        // 1. Avatar (Doctor Icon)
         Label avatar = new Label("👨‍⚕️");
         avatar.setStyle("-fx-font-size: 50px; -fx-background-color: #e3f2fd; -fx-background-radius: 50; -fx-padding: 10px;");
+
+        // 2. Name & Specialty
         Label name = new Label(d.getName());
         name.getStyleClass().add("doc-name");
+
         Label spec = new Label(d.getSpecialization());
         spec.getStyleClass().add("doc-badge");
+
+        // 3. Separator line
         Separator sep = new Separator();
         sep.setMaxWidth(200);
-        VBox details = new VBox(5);
+
+        // 4. Contact Details
+        VBox details = new VBox(10); // Increased spacing slightly for better readability
         details.setAlignment(Pos.CENTER_LEFT);
-        details.setPadding(new Insets(0, 15, 0, 15));
-        details.getChildren().add(new Label("📞  " + d.getContactNumber()));
-        details.getChildren().add(new Label("📍  " + d.getClinicAddress()));
-        details.getChildren().add(new Label("⏰  " + d.getClinicHours()));
-        details.getChildren().forEach(node -> node.setStyle("-fx-text-fill: #555; -fx-font-size: 13px;"));
-        Button bookBtn = new Button("Book Appointment");
-        bookBtn.getStyleClass().add("button-small-outline");
-        bookBtn.setMaxWidth(Double.MAX_VALUE);
-        VBox.setMargin(bookBtn, new Insets(10, 15, 0, 15));
-        card.getChildren().addAll(avatar, name, spec, sep, details, bookBtn);
+        // Added more bottom padding (25) to make the card look finished without the button
+        details.setPadding(new Insets(10, 15, 25, 15));
+
+        Label phone = new Label("📞  " + d.getContactNumber());
+        Label address = new Label("📍  " + d.getClinicAddress());
+        Label hours = new Label("⏰  " + d.getClinicHours());
+
+        // Apply consistent grey styling to details
+        String detailStyle = "-fx-text-fill: #555; -fx-font-size: 13px;";
+        phone.setStyle(detailStyle);
+        address.setStyle(detailStyle);
+        hours.setStyle(detailStyle);
+
+        details.getChildren().addAll(phone, address, hours);
+
+        // 5. Add everything to card (Button removed)
+        card.getChildren().addAll(avatar, name, spec, sep, details);
+
         return card;
     }
 

@@ -6,12 +6,21 @@
 /* --- SPLIT SCREEN LOGIC --- */
 
 /* Update the left pane with a blue overlay for brand unity */
+/* Update the left pane with a blue overlay for brand unity */
 .left-branding-pane {
     -fx-background-image: url("/background.png");
     -fx-background-size: cover;
     /* This gradient makes the text on top much easier to read */
     -fx-background-color: linear-gradient(to bottom right, rgba(0, 57, 115, 0.88), rgba(0, 82, 212, 0.8));
-    -fx-padding: 80px;
+
+    /* --- POSITIONING CONTROL --- */
+    /* Order: TOP  RIGHT  BOTTOM  LEFT */
+    /* Increase '100' to move text HIGHER up the screen */
+    /* Increase '60' to move text FURTHER RIGHT */
+    -fx-padding: 0 40 50 30;
+
+    /* Ensure text aligns to bottom-left */
+    -fx-alignment: bottom-left;
 }
 
 .brand-title-split {
@@ -495,4 +504,17 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0, 82, 212, 0.4), 20, 0, 0, 8);
 
     -fx-opacity: 0.95;
+}
+/* Apply pattern to Dashboard and internal pages */
+.dashboard-background,
+.page-background {
+    -fx-background-image: url("pattern.png");
+
+    /* FIX 1: Don't squash it. Let it cover the whole screen. */
+    -fx-background-size: cover;
+
+    /* FIX 2: Don't repeat it like a tile. */
+    -fx-background-repeat: no-repeat;
+
+    -fx-background-position: center center;
 }
