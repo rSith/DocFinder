@@ -30,8 +30,8 @@ DocFinder is a JavaFX-based desktop application that helps users identify diseas
    - Run: `mvn javafx:run` (or run `AppLauncher.java` in IntelliJ).
 
 ## 🔑 Test Credentials
-- **Username:** `sanjana_test`
-- **Password:** `pass123`
+- **Username:** `new user`
+- **Password:** `password `
 
 ## 🛠️ Tech Stack
 - **Frontend:** JavaFX (Modular Architecture)
