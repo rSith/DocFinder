@@ -1,5 +1,6 @@
 package com.docfinder.model;
 
+// Child class inherits from Person
 public class User extends Person {
     private int userID;
     private String username;
