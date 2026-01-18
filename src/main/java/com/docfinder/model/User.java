@@ -6,7 +6,8 @@ public class User extends Person {
     private String username;
     private String passwordHash;
 
-    public User(String name, int age, String gender, String contactNumber, String username, String passwordHash) {
+    public User(String name, int age, String gender, String contactNumber,
+                String username, String passwordHash) {
         // Passes common data to Parent (Person)
         super(name, age, gender, contactNumber);
         this.username = username;
