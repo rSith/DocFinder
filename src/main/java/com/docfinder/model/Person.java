@@ -52,3 +52,4 @@ public abstract class Person {
     // Abstract method that children must implement
     public abstract void displayInfo();
 }
+
